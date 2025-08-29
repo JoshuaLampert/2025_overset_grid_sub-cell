@@ -1,0 +1,11 @@
+[deps]
+LaTeXStrings = "b964fa9f-0449-5b57-a5c2-d3ea65f4040f"
+OrdinaryDiffEqLowStorageRK = "b0944070-b475-4768-8dec-fb6eb410534d"
+Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
+PrettyTables = "08abe8d2-0d0c-5749-adfa-8a2ac140af0d"
+SimpleDiscontinuousGalerkin = "1c8e7e25-3265-4959-9fcf-9ce6764f3290"
+SummationByPartsOperatorsExtra = "213abaa5-c2d1-49c7-a86b-a2b7aa43ec15"
+
+[sources]
+SimpleDiscontinuousGalerkin = {url = "https://github.com/JoshuaLampert/SimpleDiscontinuousGalerkin.jl"}
+SummationByPartsOperatorsExtra = {url = "https://github.com/JoshuaLampert/SummationByPartsOperatorsExtra.jl"}
