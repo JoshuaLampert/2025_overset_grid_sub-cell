@@ -14,7 +14,7 @@ implementing a surface integral tailored for sub-cell SBP operators.
 The following list describes which script creates which figure(s) or tables
 and the names of the resulting .pdf files:
 
-* Figures 3, 4, 5: `advection_linear_stability.jl` &rarr; `subcell_advection_overset.pdf`, `subcell_advection_overset_errors.pdf`, `subcell_advection_overset_spectra.pdf`
+* Figures 4(a), 4(b), 5: `advection_linear_stability.jl` &rarr; `subcell_advection_overset.pdf`, `subcell_advection_overset_errors.pdf`, `subcell_advection_overset_spectra.pdf`
 * Figures 6, 7, 8: `conservation_and_stability.jl` &rarr; `subcell_overset_conservation.pdf`, `subcell_overset_stability.pdf`, `subcell_overset_conservation_stability_euler.pdf`
 * Tables 1, 2: `convergence.jl`
 
