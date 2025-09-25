@@ -24,7 +24,7 @@ use the implementations provided here, please **also** cite this repository as
 ```bibtex
 @misc{glaubitz2025towardsRepro,
   title={Reproducibility repository for
-         "{T}owards provable energy stable overset grid methods using
+         ``{T}owards provable energy-stable overset grid methods using
          sub-cell summation-by-parts operators"},
   author={Glaubitz, Jan and Lampert, Joshua and Winters, Andrew R and Nordström, Jan},
   year={2025},
