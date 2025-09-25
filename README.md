@@ -1,7 +1,7 @@
 # Towards provable energy stable overset grid methods using sub-cell summation-by-parts operators
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-success.svg)](https://opensource.org/licenses/MIT)
-[![DOI](https://zenodo.org/badge/DOI/TODO/zenodo.TODO.svg)](https://doi.org/TODO/zenodo.TODO)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17198925.svg)](https://doi.org/10.5281/zenodo.17198925)
 
 
 This repository contains information and code to reproduce the results presented in the
@@ -29,7 +29,7 @@ use the implementations provided here, please **also** cite this repository as
   author={Glaubitz, Jan and Lampert, Joshua and Winters, Andrew R and Nordström, Jan},
   year={2025},
   howpublished={\url{https://github.com/JoshuaLampert/2025\_overset\_grid\_sub-cell}},
-  doi={TODO/zenodo.TODO}
+  doi={10.5281/zenodo.17198925}
 }
 ```
 
