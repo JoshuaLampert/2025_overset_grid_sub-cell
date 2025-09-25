@@ -8,7 +8,7 @@ This repository contains information and code to reproduce the results presented
 article
 ```bibtex
 @online{glaubitz2025towards,
-  title={Towards provable energy stable overset grid methods using
+  title={Towards provable energy-stable overset grid methods using
          sub-cell summation-by-parts operators},
   author={Glaubitz, Jan and Lampert, Joshua and Winters, Andrew R and Nordström, Jan},
   year={2025},
