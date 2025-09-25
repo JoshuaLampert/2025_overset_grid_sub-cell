@@ -1,4 +1,4 @@
-# Towards provable energy stable overset grid methods using sub-cell summation-by-parts operators
+# Towards provable energy-stable overset grid methods using sub-cell summation-by-parts operators
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-success.svg)](https://opensource.org/licenses/MIT)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17198925.svg)](https://doi.org/10.5281/zenodo.17198925)
