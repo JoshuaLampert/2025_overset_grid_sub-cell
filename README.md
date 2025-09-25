@@ -36,14 +36,13 @@ use the implementations provided here, please **also** cite this repository as
 ## Abstract
 
 Overset grid methods handle complex geometries by overlapping simpler, geometry-fitted grids to cover the
-original, more complex domain. However, ensuring the stability of the procedures used to couple these
-grids—particularly at high orders—remains a practical and theoretical challenge. In this work, we address
-this gap by developing a discrete counterpart to the recent well-posedness analysis of Kopriva, Gassner, and
-Nordström for continuous overset domain initial-boundary-value problems (IBVPs). To this end, we intro-
-duce the novel concept of sub-cell summation-by-parts (SBP) operators. These discrete derivative operators
-mimic integration by parts at a sub-cell level. By exploiting this sub-cell SBP property, we develop provably
-conservative and energy-stable overset grid methods for stationary meshes, thereby resolving longstanding
-stability issues in the field.
+original, more complex domain. However, ensuring their stability—particularly at high orders—remains a
+practical and theoretical challenge. In this work, we address this gap by developing a discrete counterpart
+to the recent well-posedness analysis of Kopriva, Gassner, and Nordström for continuous overset domain
+initial-boundary-value problems. To this end, we introduce the novel concept of sub-cell summation-by-
+parts (SBP) operators. These discrete derivative operators mimic integration by parts at a sub-cell level.
+By exploiting this sub-cell SBP property, we develop provably conservative and energy-stable overset grid
+methods, thereby resolving longstanding stability issues in the field.
 
 
 ## Numerical experiments
