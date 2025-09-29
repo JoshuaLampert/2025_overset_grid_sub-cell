@@ -13,7 +13,7 @@ article
   author={Glaubitz, Jan and Lampert, Joshua and Winters, Andrew R and Nordström, Jan},
   year={2025},
   month={09},
-  eprint={TODO},
+  eprint={2509.21442},
   eprinttype={arxiv},
   eprintclass={math.NA}
 }
