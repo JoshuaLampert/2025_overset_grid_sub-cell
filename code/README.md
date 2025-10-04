@@ -21,6 +21,10 @@ and the names of the resulting .pdf files:
 The resulting figures are then saved as .pdf files in a new directory `figures`
 inside the folder of this `README.md`. The tables are printed to the screen as $\LaTeX$ code.
 
+Additionally, the operators presented in Example 5.4 and Example 5.5 can be constructed and displayed using `examples.jl`.
+Different polynomial degrees for which the operators are exact, can be used by changing the number of nodes
+in each sub-cell `n`.
+
 In order to execute a script, start Julia in this folder and execute
 
 ```julia

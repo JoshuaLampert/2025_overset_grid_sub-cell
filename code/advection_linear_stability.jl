@@ -3,7 +3,6 @@ import Pkg
 Pkg.activate(@__DIR__)
 Pkg.instantiate()
 
-
 using SimpleDiscontinuousGalerkin
 using LinearAlgebra
 using Printf
