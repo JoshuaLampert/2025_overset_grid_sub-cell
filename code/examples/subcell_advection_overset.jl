@@ -7,23 +7,24 @@ include(joinpath("..", "surface_integral_subcell.jl"))
 ###############################################################################
 # semidiscretization of the linear advection equation
 
-advection_velocity = 2.0
+RealT = Float64 # Overwriting this allows to run the simulation in another floating point precision
+advection_velocity = RealT(2.0)
 equations = LinearAdvectionEquation1D(advection_velocity)
 
 initial_condition = initial_condition_convergence_test
 
-a = -1.0
-b = -0.1
-c = 0.1
-d = 1.0
+a = RealT(-1.0)
+b = RealT(-0.1)
+c = RealT(0.1)
+d = RealT(1.0)
 
 N_elements = 10
 mesh_left = Mesh(a, c, N_elements)
 mesh_right = Mesh(b, d, N_elements)
 mesh = OversetGridMesh(mesh_left, mesh_right)
 
-x_L_ref = -1.0
-x_R_ref = 1.0
+x_L_ref = RealT(-1.0)
+x_R_ref = RealT(1.0)
 p = 3
 n_nodes = p + 1
 D_GLL = legendre_derivative_operator(x_L_ref, x_R_ref, n_nodes)
@@ -35,21 +36,25 @@ b_mapped = linear_map(b, xl_L, xl_R, x_L_ref, x_R_ref)
 D_left = legendre_derivative_operator(x_L_ref, b_mapped, n_nodes)
 D_right = legendre_derivative_operator(b_mapped, x_R_ref, n_nodes)
 D_u = couple_subcell(D_left, D_right, b_mapped)
+D_u_wrapped = WrappedSubcellOperator{:left}(D_u)
 
 surface_integral = SurfaceIntegralStrongForm(flux_godunov)
+beta = 1.0 # beta = 1.0 corresponds to right-traveling waves
+surface_integral_subcell = SurfaceIntegralStrongFormSubcell(surface_integral, beta)
 volume_integral = VolumeIntegralStrongForm()
 
-Ds_left = [element == l_left ? D_u : D_GLL for element in eachelement(mesh_left)]
+Ds_left = [element == l_left ? D_u_wrapped : D_GLL for element in eachelement(mesh_left)]
 solver_left = PerElementFDSBP(Ds_left,
-    surface_integral=SurfaceIntegralStrongFormSubcell(surface_integral),
+    surface_integral=surface_integral_subcell,
     volume_integral=volume_integral)
 Ds_right = [D_GLL for element in eachelement(mesh_right)]
 solver_right = PerElementFDSBP(Ds_right,
-    surface_integral=surface_integral,
+    surface_integral=surface_integral_subcell,
     volume_integral=volume_integral)
 
 # A semidiscretization collects data structures and functions for the spatial discretization
-semi = Semidiscretization(mesh, equations, initial_condition, (solver_left, solver_right))
+semi = Semidiscretization(mesh, equations, initial_condition, (solver_left, solver_right);
+    boundary_conditions=boundary_condition_periodic)
 
 ###############################################################################
 # ODE solvers, callbacks etc.

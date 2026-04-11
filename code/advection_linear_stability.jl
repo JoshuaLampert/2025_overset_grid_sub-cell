@@ -31,6 +31,8 @@ markersize = 2
 EXAMPLES_DIR = joinpath(@__DIR__, "examples")
 OUT = joinpath(@__DIR__, "figures")
 isdir(OUT) || mkdir(OUT)
+# To allow this file being included in a long-time run without overwriting the figures, we use a filename extension that can be set when including this file.
+filename_extension = ""
 
 # We use an initial condition with a higher frequency to see the instability of classical
 # overset grid method without sub-cell operators faster.
@@ -39,30 +41,33 @@ function initial_condition_convergence_test_higher_frequency(x, t, equations::Li
     return SVector(sinpi(4 * x_trans))
 end
 tspan_long = (0.0, 200.0)
-a = -1.0
-b = -0.1
-c = 0.1
-d = 1.0
+RealT = Float64 # Overwriting this allows to run the simulation in another floating point precision
+a = RealT(-1.0)
+b = RealT(-0.1)
+c = RealT(0.1)
+d = RealT(1.0)
 
 p = 3
+N_elements = 10
 
-# We only use 9 elements for the left mesh to get the same number of DOFs compared to the case without sub-cell operators
-mesh_left_subcell = Mesh(a, c, 9)
+# We only use `N_elements - 1` elements for the left mesh to get the same number of DOFs compared to the case without sub-cell operators
+mesh_left_subcell = Mesh(a, c, N_elements - 1)
+mesh_right = Mesh(b, d, N_elements)
 trixi_include(joinpath(EXAMPLES_DIR, "subcell_advection_overset.jl"), initial_condition=initial_condition_convergence_test_higher_frequency,
-    a=a, b=b, c=c, d=d, p=p, mesh_left=mesh_left_subcell, tspan=tspan_long, interval=100, maxiters=1e9)
+    a=a, b=b, c=c, d=d, p=p, mesh_left=mesh_left_subcell, mesh_right=mesh_right, tspan=tspan_long, interval=100, maxiters=1e9, RealT=RealT)
 J = jacobian_fd(semi)
 lamb_subcell = eigvals(J)
 semi_subcell = semi
 sol_subcell = sol
 analysis_callback_subcell = analysis_callback
 
-mesh_left = Mesh(a, c, 10)
+mesh_left = Mesh(a, c, N_elements)
 Ds_left = [D_GLL for element in eachelement(mesh_left)]
 solver_left = PerElementFDSBP(Ds_left,
     surface_integral=surface_integral,
     volume_integral=volume_integral)
 trixi_include(joinpath(EXAMPLES_DIR, "subcell_advection_overset.jl"), initial_condition=initial_condition_convergence_test_higher_frequency,
-    a=a, b=b, c=c, d=d, p=p, solver_left=solver_left, tspan=tspan_long, interval=100, maxiters=1e9)
+    a=a, b=b, c=c, d=d, p=p, mesh_left=mesh_left, mesh_right=mesh_right, solver_left=solver_left, tspan=tspan_long, interval=100, maxiters=1e9, RealT=RealT)
 
 plot(semi => sol, plot_title="", title="", ylabel="", label=["u" "v"], linewidth=linewidth, linestyle=[:dashdot :dashdotdot],
     color=[:purple :red])
@@ -72,7 +77,7 @@ plot!(semi_subcell => sol_subcell, plot_title="", title="", ylabel="", label=["u
     color=[:blue :orange], legendfontsize=7)
 mesh_fine = Mesh(a, d, 100)
 x_fine = SimpleDiscontinuousGalerkin.left_element_boundary.(Ref(mesh_fine), 1:(nelements(mesh_fine)+1))
-plot!(x_fine, only.(initial_condition.(x_fine, last(tspan), equations)), label="analytical solution", color=:black, linewidth=linewidth, linestyle=:solid)
+plot!(x_fine, only.(initial_condition.(x_fine, last(tspan_long), equations)), label="analytical solution", color=:black, linewidth=linewidth, linestyle=:solid)
 # vline!(SimpleDiscontinuousGalerkin.left_element_boundary.(Ref(mesh_left), 1:(nelements(mesh_left)+1)),
 #     color=:darkblue, alpha=0.5, label="", linestyle=:dash)
 # Also plot the left mesh from the sub-cell run
@@ -81,13 +86,19 @@ vline!(SimpleDiscontinuousGalerkin.left_element_boundary.(Ref(mesh_left_subcell)
 vline!(SimpleDiscontinuousGalerkin.left_element_boundary.(Ref(mesh_right), 1:(nelements(mesh_right)+1)),
     color=:black, alpha=0.5, label="")
 
-savefig(joinpath(OUT, "subcell_advection_overset.pdf"))
+plot_solutions = true # Allows to overwrite this
+if plot_solutions
+    savefig(joinpath(OUT, "subcell_advection_overset$filename_extension.pdf"))
+end
 
 plot(analysis_callback, what=(:errors,), exclude=(:conservation_error,), title="", ylabel="Error", linewidth=linewidth,
     linestyles=[:solid :dash], label=[L"L^2" L"L^\infty"])
 plot!(analysis_callback_subcell, what=(:errors,), exclude=(:conservation_error,), title="", ylabel="Error", linewidth=linewidth,
     linestyles=[:dashdot :dot], label=[L"$L^2$ sub-cell" L"$L^\infty$ sub-cell"])
-savefig(joinpath(OUT, "subcell_advection_overset_errors.pdf"))
+plot_errors = true
+if plot_errors
+    savefig(joinpath(OUT, "subcell_advection_overset_errors$filename_extension.pdf"))
+end
 
 J = jacobian_fd(semi)
 lamb = eigvals(J)
@@ -102,4 +113,7 @@ scatter!(real.(lamb_subcell), imag.(lamb_subcell), group=stable.(lamb_subcell), 
     title=@sprintf("max. real part: %.2e", maximum(real, lamb_subcell)),
     markersize=markersize, markershape=stable_markershape.(lamb_subcell),
     layout=2, subplot=2)
-savefig(joinpath(OUT, "subcell_advection_overset_spectra.pdf"))
+plot_spectra = true
+if plot_spectra
+    savefig(joinpath(OUT, "subcell_advection_overset_spectra$filename_extension.pdf"))
+end

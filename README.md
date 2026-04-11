@@ -42,14 +42,14 @@ to the recent well-posedness analysis of Kopriva, Gassner, and Nordström for co
 initial-boundary-value problems. To this end, we introduce the novel concept of sub-cell summation-by-
 parts (SBP) operators. These discrete derivative operators mimic integration by parts at a sub-cell level.
 By exploiting this sub-cell SBP property, we develop provably conservative and energy-stable overset grid
-methods, thereby resolving longstanding stability issues in the field.
+methods for fixed overset domains, thereby resolving longstanding stability issues in the field.
 
 
 ## Numerical experiments
 
 To reproduce the numerical experiments presented in this article, you need
 to install [Julia](https://julialang.org/). The numerical experiments presented
-in this article were performed using Julia v1.11.6.
+in this article were performed using Julia v1.12.5.
 
 First, you need to download this repository, e.g., by cloning it with `git`
 or by downloading an archive via the GitHub interface. Then, you need to start

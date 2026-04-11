@@ -35,24 +35,27 @@ b_mapped = linear_map(b, xl_L, xl_R, x_L_ref, x_R_ref)
 D_left = legendre_derivative_operator(x_L_ref, b_mapped, n_nodes)
 D_right = legendre_derivative_operator(b_mapped, x_R_ref, n_nodes)
 D_u = couple_subcell(D_left, D_right, b_mapped)
+D_u_wrapped = WrappedSubcellOperator{:left}(D_u)
 
 surface_flux = flux_hll
 volume_flux = flux_ranocha
 surface_integral = SurfaceIntegralStrongForm(surface_flux)
+beta = 1.0 # beta = 1.0 corresponds to right-traveling waves
+surface_integral_subcell = SurfaceIntegralStrongFormSubcell(surface_integral, beta)
 volume_integral = VolumeIntegralFluxDifferencingStrongForm(volume_flux)
 
-Ds_left = [element == l_left ? D_u : D_GLL for element in eachelement(mesh_left)]
+Ds_left = [element == l_left ? D_u_wrapped : D_GLL for element in eachelement(mesh_left)]
 solver_left = PerElementFDSBP(Ds_left,
-    surface_integral=SurfaceIntegralStrongFormSubcell(surface_integral),
+    surface_integral=surface_integral_subcell,
     volume_integral=volume_integral)
 Ds_right = [D_GLL for element in eachelement(mesh_right)]
 solver_right = PerElementFDSBP(Ds_right,
-    surface_integral=surface_integral,
+    surface_integral=surface_integral_subcell,
     volume_integral=volume_integral)
 
 # A semidiscretization collects data structures and functions for the spatial discretization
 semi = Semidiscretization(mesh, equations, initial_condition, (solver_left, solver_right),
-    source_terms=source_terms)
+    source_terms=source_terms, boundary_conditions=boundary_condition_periodic)
 
 ###############################################################################
 # ODE solvers, callbacks etc.

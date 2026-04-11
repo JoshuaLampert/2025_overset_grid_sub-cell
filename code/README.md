@@ -3,7 +3,7 @@
 This directory contains all code required to reproduce the numerical
 experiments. First, you need to install Julia, e.g., by downloading
 the binaries from the [download page](https://julialang.org/downloads/).
-The numerical experiments were performed using Julia v1.11.6.
+The numerical experiments were performed using Julia v1.12.5.
 
 The code builds on the two Julia packages [SimpleDiscontinuousGalerkin.jl](https://github.com/JoshuaLampert/SimpleDiscontinuousGalerkin.jl)
 (providing tools for 1D overset grid methods) and [SummationByPartsOperatorsExtra.jl](https://github.com/JoshuaLampert/SummationByPartsOperatorsExtra.jl)
@@ -14,9 +14,11 @@ implementing a surface integral tailored for sub-cell SBP operators.
 The following list describes which script creates which figure(s) or tables
 and the names of the resulting .pdf files:
 
-* Figures 4(a), 4(b), 5: `advection_linear_stability.jl` &rarr; `subcell_advection_overset.pdf`, `subcell_advection_overset_errors.pdf`, `subcell_advection_overset_spectra.pdf`
-* Figures 6, 7, 8: `conservation_and_stability.jl` &rarr; `subcell_overset_conservation.pdf`, `subcell_overset_stability.pdf`, `subcell_overset_conservation_stability_euler.pdf`
-* Tables 1, 2: `convergence.jl`
+* Figures 4(a), 4(b): `advection_linear_stability.jl` &rarr; `subcell_advection_overset.pdf`, `subcell_advection_overset_errors.pdf`
+* Figure 5, 6(a), Table 2: `advection_linear_stability_spectra_larger_N.jl` &rarr; `subcell_advection_overset_spectra_N10.jl`, `subcell_advection_overset_spectra_N20.jl`
+* Figures 6(b): `advection_linear_stability_long_time.jl` &rarr; `subcell_advection_overset_errors_long_time.pdf`
+* Figures 7, 8, 9: `conservation_and_stability.jl` &rarr; `subcell_overset_conservation.pdf`, `subcell_overset_stability.pdf`, `subcell_overset_conservation_stability_euler.pdf`
+* Tables 1, 3: `convergence.jl`
 
 The resulting figures are then saved as .pdf files in a new directory `figures`
 inside the folder of this `README.md`. The tables are printed to the screen as $\LaTeX$ code.

@@ -25,7 +25,13 @@ plot!(p1, analysis_callback, exclude=(:electric_field, :magnetic_field, :entropy
 plot!(p2, analysis_callback, exclude=(:entropy, :entropy_timederivative), title="Maxwell's", legend=:outerright,
     linestyle=[:solid :dash], label=[L"\int \!E - \int E_0" L"\int \!B - \int B_0"], subplot=2; plot_kwargs...)
 
-trixi_include(joinpath(EXAMPLES_DIR, "subcell_burgers_overset.jl"), tspan=tspan, interval=1, io=devnull, source_terms=nothing)
+# Use an initial condition and domain boundaries, such that the solution of Burgers' equation is smooth to avoid huge amounts of dissipation due to shocks.
+function initial_condition_sinpi(x, t, equations::BurgersEquation1D)
+    scalar = 1 + 0.5 * sinpi(0.25 * x)
+    return SVector(scalar)
+end
+trixi_include(joinpath(EXAMPLES_DIR, "subcell_burgers_overset.jl"), tspan=tspan, a=-4.0, d=4.0, interval=1, io=devnull,
+    initial_condition=initial_condition_sinpi, source_terms=nothing)
 plot!(p1, analysis_callback, exclude=(:mass, :entropy), label="Burgers'", subplot=3; plot_kwargs...)
 plot!(p2, analysis_callback, exclude=(:entropy, :entropy_timederivative), title="Burgers'", legend=:outerright,
     label=L"\int \!u - \int u_0", subplot=3; plot_kwargs...)
@@ -43,13 +49,14 @@ linestyle_stability = :dashdot
 label_conservation = [L"\int\!\rho - \int\!\rho_0" L"\int\!\rho v - \int\!(\rho v)_0" L"\int\!\rho e - \int\!(\rho e)_0"]
 label_stability = L"\int\!\partial S/\partial U \cdot U_t"
 
-trixi_include(joinpath(EXAMPLES_DIR, "subcell_compressible_euler_overset.jl"), interval=1, io=devnull, source_terms=nothing)
+tspan = (0.0, 2.0)
+trixi_include(joinpath(EXAMPLES_DIR, "subcell_compressible_euler_overset.jl"), tspan=tspan, interval=1, io=devnull, source_terms=nothing)
 p3 = plot(analysis_callback, exclude=(:entropy, :entropy_timederivative), label=label_conservation, subplot=1, legend=nothing,
     linestyles=linestyles_conservation, colors=colors[1:3]; plot_kwargs_euler...)
 plot!(p3, analysis_callback, exclude=(:density, :momentum, :energy_total, :entropy), label=label_stability, subplot=2, legend=nothing,
     linestyles=linestyle_stability, color=colors[4]; plot_kwargs_euler...)
 
-trixi_include(joinpath(EXAMPLES_DIR, "subcell_compressible_euler_overset.jl"), interval=1, io=devnull, source_terms=nothing, surface_flux=flux_lax_friedrichs)
+trixi_include(joinpath(EXAMPLES_DIR, "subcell_compressible_euler_overset.jl"), tspan=tspan, interval=1, io=devnull, source_terms=nothing, surface_flux=flux_lax_friedrichs)
 plot!(analysis_callback, exclude=(:entropy, :entropy_timederivative), label=label_conservation, subplot=3, legend=nothing,
     linestyles=linestyles_conservation, colors=colors[1:3], legend_column=3; plot_kwargs_euler...)
 plot!(p3, analysis_callback, exclude=(:density, :momentum, :energy_total, :entropy), label=label_stability, subplot=4, legend=nothing,

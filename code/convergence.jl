@@ -14,17 +14,14 @@ EXAMPLES_DIR = joinpath(@__DIR__, "examples")
 function create_eoc_table(filename)
     tables_str = []
 
-    Ns = [10, 20, 50, 80]
+    Ns = [10, 20, 40, 80]
     polydegs = [3, 4]
 
 
     for p in polydegs
-        _, errorsmatrix = convergence_test(joinpath(EXAMPLES_DIR, filename), Ns, p=p, abstol=1e-14, reltol=1e-14)
-        eocs = Dict(kind => log.(error[2:end, :] ./ error[1:(end-1), :]) ./
-                            log.(Ns[1:(end-1)] ./ Ns[2:end])
-                    for (kind, error) in errorsmatrix)
+        eocs, errorsmatrix = convergence_test(joinpath(EXAMPLES_DIR, filename), Ns, p=p, abstol=1e-14, reltol=1e-14)
+        equations = @invokelatest (@__MODULE__).equations
         table_str = []
-        println(eocs)
         for (i, N) in enumerate(Ns)
             l2 = errorsmatrix[:l2][i, :]
             eoc_first_variable = i == 1 ? "---" : @sprintf("%.2f", eocs[:l2][i-1, 1])
