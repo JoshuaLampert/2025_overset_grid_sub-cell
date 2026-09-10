@@ -10,7 +10,7 @@ article
 @article{glaubitz2027towards,
   title={Towards provable energy-stable overset grid methods using
          sub-cell summation-by-parts operators},
-  author={Glaubitz, Jan and Lampert, Joshua and Winters, Andrew R and Nordström, Jan},
+  author={Glaubitz, Jan and Lampert, Joshua and Winters, Andrew R and Nordstr{\"o}m, Jan},
   journal={Journal of Computational Physics},
   volume={568},
   year={2027},
