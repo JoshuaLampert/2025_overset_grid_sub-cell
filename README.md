@@ -7,12 +7,16 @@
 This repository contains information and code to reproduce the results presented in the
 article
 ```bibtex
-@online{glaubitz2025towards,
+@article{glaubitz2027towards,
   title={Towards provable energy-stable overset grid methods using
          sub-cell summation-by-parts operators},
   author={Glaubitz, Jan and Lampert, Joshua and Winters, Andrew R and Nordström, Jan},
-  year={2025},
-  month={09},
+  journal={Journal of Computational Physics},
+  volume={568},
+  year={2027},
+  month={01},
+  pages={115347},
+  doi={10.1016/j.jcp.2026.115347},
   eprint={2509.21442},
   eprinttype={arxiv},
   eprintclass={math.NA}
@@ -37,12 +41,14 @@ use the implementations provided here, please **also** cite this repository as
 
 Overset grid methods handle complex geometries by overlapping simpler, geometry-fitted grids to cover the
 original, more complex domain. However, ensuring their stability—particularly at high orders—remains a
-practical and theoretical challenge. In this work, we address this gap by developing a discrete counterpart
+theoretical challenge: although overset grid methods perform robustly in extensive practical use, general
+stability proofs are not available. In this work, we address this gap by developing a discrete counterpart
 to the recent well-posedness analysis of Kopriva, Gassner, and Nordström for continuous overset domain
-initial-boundary-value problems. To this end, we introduce the novel concept of sub-cell summation-by-
-parts (SBP) operators. These discrete derivative operators mimic integration by parts at a sub-cell level.
+initial-boundary-value problems. To this end, we introduce the novel concept of sub-cell summation-by-parts
+(SBP) operators. These discrete derivative operators mimic integration by parts at a sub-cell level.
 By exploiting this sub-cell SBP property, we develop provably conservative and energy-stable overset grid
-methods for fixed overset domains, thereby resolving longstanding stability issues in the field.
+methods for fixed one-dimensional overset domains that do not change with time or under grid refinement,
+providing a step toward stability proofs for overset grid methods based on the energy method.
 
 
 ## Numerical experiments
